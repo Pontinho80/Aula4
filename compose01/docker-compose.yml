@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mysql:
+    image: pontinho80/aula-ead:0.0.1
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: aula4
+      MYSQL_USER: user
+      MYSQL_PASSWORD: ''
+    volumes:
+      -"./.data/db:/var/lib/mysql"
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
+    ports:
+      - 3306:3306
+    network:
+      - exe04
+
+  nodejs:
+    build: .
+    container_name: nodejs
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - exe04
+    depends_on:
+      - mysql
+networks:
+  exe04:
+  
